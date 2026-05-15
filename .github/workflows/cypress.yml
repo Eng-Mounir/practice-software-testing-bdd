@@ -17,7 +17,7 @@ jobs:
   # ─── Cypress Test Matrix ──────────────────────────────────
   cypress-bdd-tests:
     name: 🌐 ${{ matrix.browser }} — BDD Tests
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
@@ -70,7 +70,7 @@ jobs:
   # ─── Original Test Suite (Regression) ─────────────────────
   cypress-original-tests:
     name: 🔁 Regression — Original .cy.js Tests
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: cypress-bdd-tests
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
