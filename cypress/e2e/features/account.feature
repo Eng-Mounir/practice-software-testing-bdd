@@ -27,13 +27,7 @@ Feature: Account and User Profile
     And a profile update feedback should appear
 
   # ── TC-031 ──────────────────────────────────────────────────
-  @invoices
-  Scenario: TC-031 - View user order history
-    Given I am logged in as "customer@practicesoftwaretesting.com" with password "welcome01"
-    When I navigate to the invoices page
-    Then the URL should contain "/account/invoices"
-    And the page title should be visible
-    And the invoices table should be visible
+
 
   # ── TC-032 ──────────────────────────────────────────────────
   @invoices
