@@ -1,7 +1,7 @@
 {
-  "name": "testing3",
-  "version": "1.0.0",
-  "description": "test tesiting",
+  "name": "practice-software-testing-bdd",
+  "version": "2.0.0",
+  "description": "Professional Cypress BDD Testing Suite with Cucumber, POM, and CI/CD for Practice Software Testing Toolshop",
   "license": "ISC",
   "author": "",
   "type": "commonjs",
@@ -12,11 +12,28 @@
     "test:headed": "cypress run --headed",
     "test:chrome": "cypress run --browser chrome",
     "test:firefox": "cypress run --browser firefox",
-    "test:spec": "cypress run --spec"
+    "test:spec": "cypress run --spec",
+    "test:bdd": "cypress run --spec \"cypress/e2e/features/**/*.feature\"",
+    "test:bdd:open": "cypress open --e2e",
+    "test:bdd:auth": "cypress run --spec \"cypress/e2e/features/authentication.feature\"",
+    "test:bdd:products": "cypress run --spec \"cypress/e2e/features/products.feature\"",
+    "test:bdd:cart": "cypress run --spec \"cypress/e2e/features/cart.feature\"",
+
+    "test:bdd:account": "cypress run --spec \"cypress/e2e/features/account.feature\"",
+    "test:original": "cypress run --spec \"cypress/e2e/*.cy.js\"",
+    "test:all": "cypress run"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": "cypress/e2e/[filepath]/**/*.js",
+    "nonGlobalStepDefinitions": true
   },
   "dependencies": {
     "chai": "^6.2.2",
     "cypress": "^15.12.0",
     "mocha": "^11.7.5"
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^24.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8"
   }
 }

@@ -1,0 +1,103 @@
+# ============================================================
+# GitHub Actions CI/CD Pipeline — Cypress BDD E2E Tests
+# ============================================================
+# Runs the full BDD Cucumber test suite on push/PR to main/develop
+# across Chrome and Firefox using the official Cypress GitHub Action.
+# ============================================================
+
+name: 🧪 Cypress BDD E2E Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── Cypress Test Matrix ──────────────────────────────────
+  cypress-bdd-tests:
+    name: 🌐 ${{ matrix.browser }} — BDD Tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+
+    steps:
+      # 1 ─ Checkout repository
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      # 2 ─ Setup Node.js
+      - name: 🟢 Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      # 3 ─ Install dependencies
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      # 4 ─ Run BDD Cucumber tests
+      - name: 🧪 Run Cypress BDD Tests (${{ matrix.browser }})
+        uses: cypress-io/github-action@v6
+        with:
+          browser: ${{ matrix.browser }}
+          spec: cypress/e2e/features/**/*.feature
+        env:
+          CYPRESS_BASE_URL: https://practicesoftwaretesting.com
+
+      # 5 ─ Upload test artifacts on failure
+      - name: 📸 Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots-${{ matrix.browser }}
+          path: cypress/screenshots
+          retention-days: 7
+
+      - name: 🎥 Upload videos on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-videos-${{ matrix.browser }}
+          path: cypress/videos
+          retention-days: 7
+
+  # ─── Original Test Suite (Regression) ─────────────────────
+  cypress-original-tests:
+    name: 🔁 Regression — Original .cy.js Tests
+    runs-on: ubuntu-latest
+    needs: cypress-bdd-tests
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: 🧪 Run Original Cypress Tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          spec: "cypress/e2e/01-authentication.cy.js,cypress/e2e/02-products.cy.js,cypress/e2e/03-cart.cy.js,cypress/e2e/05-account.cy.js"
+        env:
+          CYPRESS_BASE_URL: https://practicesoftwaretesting.com
+
+      - name: 📸 Upload artifacts on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-regression-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
+          retention-days: 7

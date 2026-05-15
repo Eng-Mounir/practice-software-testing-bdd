@@ -1,7 +1,9 @@
 const { defineConfig } = require("cypress");
+const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
+const { addCucumberPreprocessorPlugin } = require("@badeball/cypress-cucumber-preprocessor");
+const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor/esbuild");
 
 module.exports = defineConfig({
-  allowCypressEnv: false,
   projectId: "practice_software_testing",
   viewportWidth: 1280,
   viewportHeight: 720,
@@ -11,13 +13,27 @@ module.exports = defineConfig({
   pageLoadTimeout: 30000,
   video: true,
   screenshotOnRunFailure: true,
-  
+
   e2e: {
-    baseUrl: "https://practicesoftwaretesting.com", //dy ba2olo baseurl lw katab visit.("/login") ka2ny ba2kml 3ala baseurl dh 3ashan golbally
-    specPattern: "cypress/e2e/**/*.cy.js", //hena ba2olo ybda2 y search 3ala ay files aw foldes ely fyhom testcases ely mehtag y3mlha test
-    supportFile: "cypress/support/e2e.js", //points ly test cases abl matyshta8l 3ashan bet2olo hena fyh golbal hooks w custom comands abl maybda2 lazm yshofhom
-    setupNodeEvents(on, config) {
-      // implement node event listeners here (e.g. for plugins or custom tasks) for example 
+    baseUrl: "https://practicesoftwaretesting.com",
+    specPattern: [
+      "cypress/e2e/**/*.cy.js",
+      "cypress/e2e/features/**/*.feature",
+    ],
+    supportFile: "cypress/support/e2e.js",
+    async setupNodeEvents(on, config) {
+      // Cucumber BDD preprocessor plugin
+      await addCucumberPreprocessorPlugin(on, config);
+
+      on(
+        "file:preprocessor",
+        createBundler({
+          plugins: [createEsbuildPlugin(config)],
+        })
+      );
+
+      // Return the config object (may have been modified by the plugin)
+      return config;
     },
   },
 

@@ -1,95 +1,140 @@
-# Cypress Automation Framework for Practice Software Testing
+# 🧪 Practice Software Testing — Cypress BDD Test Suite
 
-A professional, comprehensive Cypress automation testing framework for [https://practicesoftwaretesting.com/](https://practicesoftwaretesting.com/) with 38+ test cases, custom commands, fixtures, and hooks.
+[![Cypress BDD Tests](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/cypress.yml/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/cypress.yml)
+
+> **Professional-grade** end-to-end testing framework for [practicesoftwaretesting.com](https://practicesoftwaretesting.com) using **Cypress**, **BDD Cucumber**, **Page Object Model**, and **GitHub Actions CI/CD**.
 
 ---
 
 ## 📋 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Test Coverage](#test-coverage)
-- [Project Structure](#project-structure)
-- [Installation & Setup](#installation--setup)
-- [Running Tests](#running-tests)
-- [Custom Commands](#custom-commands)
-- [Fixtures](#fixtures)
-- [Hooks](#hooks)
-- [Best Practices](#best-practices)
-- [Troubleshooting](#troubleshooting)
+- [Architecture](#-architecture)
+- [Test Coverage](#-test-coverage)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Running Tests](#-running-tests)
+- [Project Structure](#-project-structure)
+- [Page Object Model](#-page-object-model)
+- [BDD Cucumber](#-bdd-cucumber)
+- [CI/CD Pipeline](#-cicd-pipeline)
+- [Fixtures & Custom Commands](#-fixtures--custom-commands)
 
 ---
 
-## 🎯 Project Overview
+## 🏗 Architecture
 
-This framework is designed with professional best practices including:
-
-- ✅ **Custom Commands**: Reusable commands for login, search, cart operations, assertions, and more
-- ✅ **Fixtures**: Test data for users, products, checkout, and payment information
-- ✅ **Hooks**: Global setup/teardown with before/after hooks for test isolation
-- ✅ **Comprehensive Coverage**: 38+ test cases across 5 test suites
-- ✅ **Multiple Assertions**: Each test includes 3+ assertions for robust validation
-- ✅ **Professional Architecture**: Clear folder structure and naming conventions
+```
+┌─────────────────────────────────────────────────────────┐
+│                   GitHub Actions CI/CD                   │
+│         (Chrome + Firefox matrix, artifacts)             │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│   ┌──────────────┐    ┌─────────────────────────────┐   │
+│   │  .feature    │───>│  Step Definitions (.js)     │   │
+│   │  (Gherkin)   │    │  Given / When / Then        │   │
+│   └──────────────┘    └──────────┬──────────────────┘   │
+│                                  │                      │
+│                        ┌─────────▼─────────┐            │
+│                        │  Page Objects     │            │
+│                        │  (POM Pattern)    │            │
+│                        └─────────┬─────────┘            │
+│                                  │                      │
+│                        ┌─────────▼─────────┐            │
+│                        │ Custom Commands   │            │
+│                        │ + Fixtures (JSON) │            │
+│                        └─────────┬─────────┘            │
+│                                  │                      │
+│                        ┌─────────▼─────────┐            │
+│                        │   Cypress Engine  │            │
+│                        └───────────────────┘            │
+└─────────────────────────────────────────────────────────┘
+```
 
 ---
 
 ## 📊 Test Coverage
 
-### Test Statistics
-- **Total Test Cases**: 38
-- **Test Suites**: 5
-- **Custom Commands**: 30+
-- **Assertions per Test**: 3+
-- **Fixture Files**: 4
+| # | Suite | Test Cases | Scenarios |
+|---|-------|-----------|-----------|
+| 1 | **Authentication** | TC-001 → TC-006 | Login, invalid login, empty form, registration validation, logout |
+| 2 | **Products** | TC-007 → TC-014 | Search, no results, category filter, price filter, sort, product detail, pagination |
+| 3 | **Cart** | TC-015 → TC-021 | Add to cart, multiple quantities, view cart, update qty, remove, total calculation, continue shopping |
+| 4 | **Checkout** | TC-022 → TC-028 | Proceed to checkout, shipping address, address validation, payment, payment methods, credit card, guest checkout |
+| 5 | **Account** | TC-029 → TC-038 | Profile view, profile update, order history, invoice details, addresses, address update, favorites, invoices list, change password, messages |
+| | **Total** | **38 Test Cases** | |
 
-### Test Suites Breakdown
+---
 
-#### 1. **Authentication Tests** (6 tests - TC-001 to TC-006)
-- Login with valid credentials
-- Login with invalid email
-- Login with invalid password
-- Login with empty fields
-- User registration
-- Logout functionality
+## 🛠 Tech Stack
 
-#### 2. **Product Browsing & Search** (8 tests - TC-007 to TC-014)
-- Search for products
-- No results handling
-- Filter by category
-- Filter by price range
-- Sort by name
-- Sort by price
-- View product details
-- Pagination navigation
+| Component | Technology |
+|-----------|-----------|
+| Test Framework | Cypress v15 |
+| BDD Layer | `@badeball/cypress-cucumber-preprocessor` |
+| Bundler | `@bahmutov/cypress-esbuild-preprocessor` |
+| Language | JavaScript (CommonJS) |
+| Pattern | Page Object Model (POM) |
+| CI/CD | GitHub Actions |
+| Assertions | Chai (built-in) + Custom Commands |
 
-#### 3. **Shopping Cart** (7 tests - TC-015 to TC-021)
-- Add single product to cart
-- Add multiple quantities
-- View cart contents
-- Update product quantity
-- Remove product from cart
-- Calculate total with multiple products
-- Continue shopping
+---
 
-#### 4. **Checkout & Orders** (7 tests - TC-022 to TC-028)
-- Proceed to checkout
-- Fill shipping address
-- Select existing address
-- Complete payment
-- Apply coupon code
-- Invalid coupon rejection
-- Checkout requires login
+## 🚀 Getting Started
 
-#### 5. **Account & User Profile** (10 tests - TC-029 to TC-038)
-- View profile information
-- Update profile
-- View order history
-- View order details
-- View saved addresses
-- Add new address
-- Delete address
-- View payment methods
-- Change password
-- View account settings
+### Prerequisites
+
+- **Node.js** ≥ 18.x
+- **npm** ≥ 9.x
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
+
+# Install all dependencies
+npm install
+```
+
+---
+
+## 🧪 Running Tests
+
+### BDD Cucumber Tests
+
+```bash
+# Run ALL BDD feature tests (headless)
+npm run test:bdd
+
+# Run specific feature suite
+npm run test:bdd:auth        # Authentication (TC-001 → TC-006)
+npm run test:bdd:products    # Products (TC-007 → TC-014)
+npm run test:bdd:cart        # Cart (TC-015 → TC-021)
+npm run test:bdd:checkout    # Checkout (TC-022 → TC-028)
+npm run test:bdd:account     # Account (TC-029 → TC-038)
+
+# Open Cypress GUI (interactive)
+npm run test:bdd:open
+```
+
+### Original .cy.js Tests
+
+```bash
+# Run original test files
+npm run test:original
+
+# Run ALL tests (BDD + original)
+npm run test:all
+```
+
+### Browser-specific
+
+```bash
+npm run test:chrome
+npm run test:firefox
+npm run test:headed
+```
 
 ---
 
@@ -97,362 +142,178 @@ This framework is designed with professional best practices including:
 
 ```
 testing3/
+├── .github/
+│   └── workflows/
+│       └── cypress.yml                    # CI/CD Pipeline
 ├── cypress/
 │   ├── e2e/
-│   │   ├── 01-authentication.cy.js      # Login, register, logout tests
-│   │   ├── 02-products.cy.js            # Search, filter, sort tests
-│   │   ├── 03-cart.cy.js                # Cart operations tests
-│   │   ├── 04-checkout.cy.js            # Checkout and orders tests
-│   │   └── 05-account.cy.js             # User profile and settings tests
-│   ├── fixtures/
-│   │   ├── users.json                   # User credentials and test data
-│   │   ├── products.json                # Product catalog and filters
-│   │   ├── checkout.json                # Addresses, payments, coupon codes
-│   │   └── example.json                 # Placeholder
+│   │   ├── 01-authentication.cy.js        # Original Project 1 tests
+│   │   ├── 02-products.cy.js
+│   │   ├── 03-cart.cy.js
+│   │   ├── 04-checkout.cy.js
+│   │   ├── 05-account.cy.js
+│   │   └── features/                      # ✨ BDD Cucumber
+│   │       ├── authentication.feature     # Gherkin scenarios
+│   │       ├── authentication/
+│   │       │   └── authentication.js      # Step definitions
+│   │       ├── products.feature
+│   │       ├── products/
+│   │       │   └── products.js
+│   │       ├── cart.feature
+│   │       ├── cart/
+│   │       │   └── cart.js
+│   │       ├── checkout.feature
+│   │       ├── checkout/
+│   │       │   └── checkout.js
+│   │       ├── account.feature
+│   │       └── account/
+│   │           └── account.js
+│   ├── fixtures/                          # Test data (JSON)
+│   │   ├── users.json
+│   │   ├── products.json
+│   │   └── checkout.json
+│   ├── pages/                             # ✨ Page Object Model
+│   │   ├── LoginPage.js
+│   │   ├── RegisterPage.js
+│   │   ├── HomePage.js
+│   │   ├── ProductDetailPage.js
+│   │   ├── CartPage.js
+│   │   ├── CheckoutPage.js
+│   │   ├── AccountPage.js
+│   │   └── NavBar.js
 │   └── support/
-│       ├── commands.js                  # 30+ custom commands
-│       ├── e2e.js                       # Global hooks and setup
-│       └── index.js                     # Support configuration
-├── cypress.config.js                     # Cypress configuration
-├── package.json                          # Project dependencies and scripts
-└── README.md                             # This file
+│       ├── commands.js                    # Custom Cypress commands
+│       └── e2e.js                         # Global hooks & config
+├── cypress.config.js                      # Cypress + Cucumber config
+├── package.json
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## 🚀 Installation & Setup
+## 🏛 Page Object Model
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm (v6 or higher)
+Each page of the application has a dedicated **Page Object class** that encapsulates:
 
-### Step 1: Install Dependencies
-```bash
-npm install
-```
+- **Selectors** — CSS/data-test attribute selectors as getter properties
+- **Actions** — Methods that perform user interactions (click, type, navigate)
+- **Assertions** — Methods that verify expected outcomes
 
-### Step 2: Verify Installation
-```bash
-npm run test:open
-```
-
-This will open the Cypress Test Runner in interactive mode.
-
----
-
-## 🧪 Running Tests
-
-### Run all tests (headless)
-```bash
-npm run test
-```
-
-### Run tests in headed mode (see browser)
-```bash
-npm run test:headed
-```
-
-### Open Cypress Test Runner (interactive mode)
-```bash
-npm run test:open
-```
-
-### Run specific test file
-```bash
-npm run test:spec cypress/e2e/01-authentication.cy.js
-```
-
-### Run tests in Chrome browser
-```bash
-npm run test:chrome
-```
-
-### Run tests in Firefox browser
-```bash
-npm run test:firefox
-```
-
----
-
-## 🛠️ Custom Commands
-
-All custom commands are defined in `cypress/support/commands.js`.
-
-### Authentication Commands
 ```javascript
-cy.login(email, password)              // Login user
-cy.logout()                            // Logout user
-cy.registerUser(userData)              // Register new user
-```
+// Example: LoginPage.js
+class LoginPage {
+  get emailInput()     { return '[data-test="email"]'; }
+  get passwordInput()  { return '[data-test="password"]'; }
+  get loginSubmitBtn() { return '[data-test="login-submit"]'; }
 
-### Product Commands
-```javascript
-cy.searchProduct(searchTerm)           // Search for product
-cy.viewProductDetails(productName)     // View product page
-cy.filterByCategory(category)          // Filter by category
-cy.filterByPrice(minPrice, maxPrice)   // Filter by price range
-cy.sortProducts(sortOption)            // Sort products
-```
+  login(email, password) {
+    this.visit();
+    this.fillEmail(email);
+    this.fillPassword(password);
+    this.clickSubmit();
+  }
 
-### Cart Commands
-```javascript
-cy.addToCart(quantity)                 // Add product to cart
-cy.viewCart()                          // View shopping cart
-cy.removeFromCart(productName)         // Remove item from cart
-cy.updateCartQuantity(productName, qty) // Update quantity
-```
-
-### Checkout Commands
-```javascript
-cy.proceedToCheckout()                 // Proceed to checkout
-cy.fillShippingAddress(address)        // Fill shipping info
-cy.completePayment(paymentData)        // Complete payment
-```
-
-### Assertion Commands
-```javascript
-cy.verifyPageTitle(expectedTitle)      // Verify page title
-cy.verifyElementVisible(selector)      // Verify element visible
-cy.verifyErrorMessage(message)         // Verify error message
-cy.verifySuccessMessage(message)       // Verify success message
-cy.verifyProductInCart(productName)    // Verify product in cart
-cy.verifyCartEmpty()                   // Verify empty cart
-```
-
-### Utility Commands
-```javascript
-cy.waitForLoad()                       // Wait for loading spinner
-cy.clearSession()                      // Clear session storage
-cy.getElementCount(selector)           // Get element count
-```
-
----
-
-## 📦 Fixtures
-
-Fixtures contain test data used across test suites.
-
-### users.json
-```json
-{
-  "validUsers": [
-    {
-      "email": "test@practicesoftwaretesting.com",
-      "password": "Test@123"
-    }
-  ],
-  "invalidUsers": [
-    {
-      "email": "invalid@test.com",
-      "password": "wrongpassword"
-    }
-  ],
-  "newRegistration": {
-    "firstName": "Automation",
-    "lastName": "Tester",
-    "email": "automation@test.com",
-    "password": "AutoTest@123"
+  assertOnLoginPage() {
+    cy.url().should("include", "/auth/login");
   }
 }
 ```
 
-### products.json
-```json
-{
-  "products": [
-    {
-      "name": "Combination Pliers",
-      "category": "Hand Tools",
-      "price": 25.50
-    }
-  ],
-  "productFilters": {
-    "categories": ["Hand Tools", "Power Tools"],
-    "sortOptions": ["name-asc", "price-asc"]
-  }
-}
-```
+### Page Objects
 
-### checkout.json
-```json
-{
-  "shippingAddresses": [...],
-  "paymentMethods": [...],
-  "couponCodes": [...]
-}
-```
+| Page Object | Covers |
+|-------------|--------|
+| `LoginPage` | `/auth/login` — email, password, submit, errors |
+| `RegisterPage` | `/auth/register` — form fields, validation |
+| `HomePage` | `/` — search, filter, sort, pagination |
+| `ProductDetailPage` | `/product/*` — name, description, add to cart |
+| `CartPage` | `/checkout` step 1 — items, quantities, totals |
+| `CheckoutPage` | `/checkout` steps 2-4 — shipping, payment |
+| `AccountPage` | `/account/*` — profile, invoices, favorites |
+| `NavBar` | Navigation bar — cart, menu, sign in/out |
 
 ---
 
-## 🔧 Hooks
+## 🥒 BDD Cucumber
 
-Global hooks are configured in `cypress/support/e2e.js`.
+Tests are written in **Gherkin** syntax using `.feature` files:
 
-### Before Hook
-Runs once before all tests
-```javascript
-before(() => {
-  cy.log('Starting Test Suite Execution');
-});
+```gherkin
+@authentication @smoke
+Scenario: TC-001 - Successful login with valid credentials
+  Given I am on the login page
+  When I enter email "customer@practicesoftwaretesting.com"
+  And I enter password "welcome01"
+  And I click the login button
+  Then I should be redirected to the account page
+  And the page title should display "My account"
+  And the user navigation menu should be visible
 ```
 
-### BeforeEach Hook
-Runs before each test
-```javascript
-beforeEach(() => {
-  cy.clearCookies();
-  cy.clearLocalStorage();
-  cy.visit('/');
-});
-```
+**Step definitions** map Gherkin steps to Cypress commands using Page Objects:
 
-### AfterEach Hook
-Runs after each test
 ```javascript
-afterEach(() => {
-  cy.log('Test execution completed');
+Given("I am on the login page", () => {
+  loginPage.visit();
 });
-```
 
-### After Hook
-Runs once after all tests
-```javascript
-after(() => {
-  cy.log('All tests completed');
+When("I enter email {string}", (email) => {
+  loginPage.fillEmail(email);
 });
 ```
 
 ---
 
-## ✅ Best Practices Implemented
+## ⚙ CI/CD Pipeline
 
-### 1. **Clear Test Organization**
-- Tests organized into separate files by feature
-- Descriptive test names with TC numbers
-- Logical grouping with describe blocks
+The GitHub Actions workflow (`.github/workflows/cypress.yml`) runs:
 
-### 2. **Reusable Commands**
-- Custom commands for common actions
-- Reduces code duplication
-- Easier maintenance
+1. **BDD Tests** across Chrome and Firefox (matrix strategy)
+2. **Regression Tests** using original `.cy.js` files
+3. **Artifact Upload** — screenshots and videos on failure
 
-### 3. **Test Data Management**
-- Fixtures for centralized test data
-- Easy to update test credentials
-- Separation of concerns
-
-### 4. **Comprehensive Assertions**
-- Multiple assertions per test
-- Validates different aspects
-- Better test quality
-
-### 5. **Hooks for Test Isolation**
-- Clear setup and teardown
-- Consistent test environment
-- Prevents test pollution
-
-### 6. **Professional Documentation**
-- Clear comments in code
-- README with usage examples
-- Easy onboarding for new developers
-
-### 7. **Error Handling**
-- Proper wait times
-- Element visibility checks
-- Handles uncaught exceptions
-
----
-
-## 🐛 Troubleshooting
-
-### Issue: Tests fail with "Element not found"
-**Solution**: 
-- Use correct data attributes from the website
-- Verify selectors match actual page elements
-- Add longer wait times if needed
-- Check that Cypress is targeting correct URL
-
-### Issue: Login fails
-**Solution**:
-- Verify credentials in users.json fixture
-- Check if website has changed login flow
-- Review browser console for errors
-- Ensure cookies are being set correctly
-
-### Issue: Timeout errors
-**Solution**:
-- Increase timeout in cypress.config.js: `defaultCommandTimeout: 10000`
-- Add explicit wait: `cy.wait(2000)`
-- Use `cy.waitForLoad()` custom command
-
-### Issue: Test data not clearing
-**Solution**:
-- Ensure beforeEach hook includes `cy.clearCookies()`
-- Clear localStorage: `cy.clearLocalStorage()`
-- Use logout command between tests
-
-### Issue: Tests pass locally but fail in CI/CD
-**Solution**:
-- Check baseUrl in cypress.config.js
-- Ensure proper waits for network requests
-- Verify environment variables
-- Check for race conditions in test code
-
----
-
-## 📖 Example Test Case Structure
-
-```javascript
-describe("Feature Tests", () => {
-  beforeEach(() => {
-    cy.fixture("users").as("users");
-  });
-
-  it("[TC-001] Should complete action successfully", function () {
-    // ARRANGE: Setup
-    const user = this.users.validUsers[0];
-    
-    // ACT: Perform action
-    cy.login(user.email, user.password);
-    
-    // ASSERT: Verify results (minimum 3 assertions)
-    cy.url().should("include", "/dashboard");
-    cy.get('[data-test="welcome"]').should("be.visible");
-    cy.get('[data-test="nav-logout"]').should("be.visible");
-  });
-});
+```yaml
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
 ```
 
 ---
 
-## 📞 Support & Contribution
+## 📦 Fixtures & Custom Commands
 
-For issues or improvements:
-1. Check troubleshooting section
-2. Review Cypress documentation: https://docs.cypress.io
-3. Check element selectors using browser DevTools
-4. Use `cy.log()` for debugging
+### Fixtures (`cypress/fixtures/`)
+
+| File | Purpose |
+|------|---------|
+| `users.json` | Valid/invalid user credentials, registration data |
+| `products.json` | Product names, categories, price ranges, sort options |
+| `checkout.json` | Shipping addresses, payment methods, order data |
+
+### Custom Commands (`cypress/support/commands.js`)
+
+| Command | Description |
+|---------|-------------|
+| `cy.login(email, pass)` | Login with auto-recovery on account lock |
+| `cy.logout()` | Sign out via navigation menu |
+| `cy.searchProduct(term)` | Search for a product by name |
+| `cy.viewProductDetails(name)` | Click into product detail page |
+| `cy.addToCart(qty)` | Add current product to cart |
+| `cy.viewCart()` | Navigate to cart page |
+| `cy.filterByCategory(cat)` | Check category filter checkbox |
+| `cy.filterByPrice(min, max)` | API-verified price range filter |
+| `cy.sortProducts(option)` | Sort products dropdown |
+| `cy.proceedToCheckout()` | Click proceed to checkout |
+| `cy.fillShippingAddress(addr)` | Fill shipping form |
+| `cy.completePayment(data)` | Complete bank transfer payment |
+| `cy.verifyErrorMessage(msg)` | Assert error text visible |
+| `cy.verifyProductInCart(name)` | Assert product exists in cart |
 
 ---
 
-## 🔐 Security Notes
+## 📄 License
 
-⚠️ **Important**: 
-- Do not commit actual credentials to repository
-- Use environment variables for sensitive data
-- Review test data in fixtures before running in CI/CD
-- Consider using encrypted test data for production environments
-
----
-
-## 📝 License
-
-This project is for educational purposes. Refer to the practice website's terms of service before use.
-
----
-
-**Framework Created**: March 24, 2026  
-**Version**: 1.0.0  
-**Status**: Production Ready ✅
-#   o m a r - y a s s e r  
- 
+ISC
